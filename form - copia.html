@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pestañas con Formulario de Ingreso</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .tabs {
+            display: flex;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        .tab {
+            padding: 10px 20px;
+            background: #f1f1f1;
+            border: 1px solid #ccc;
+            margin-right: 5px;
+        }
+        .tab.active {
+            background: #fff;
+            border-bottom: 1px solid transparent;
+        }
+        .tab-content {
+            border: 1px solid #ccc;
+            padding: 20px;
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .results-table th, .results-table td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+        .results-table th {
+            background: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Pestañas de Ejemplo</h1>
+
+<div class="tabs">
+    <div class="tab active" onclick="showTab('tab1')">Pestaña 1</div>
+    <div class="tab" onclick="showTab('tab2')">Pestaña 2</div>
+    <div class="tab" onclick="showTab('tab3')">Pestaña 3</div>
+</div>
+
+<div id="tab1" class="tab-content active">
+    <h2>Contenido de la Pestaña 1</h2>
+    
+    <label for="filterInput">Filtrar contenido:</label>
+    <input type="text" id="filterInput" placeholder="Escribe para filtrar..." oninput="filterContent()">
+    
+    <button onclick="searchContent()">Buscar</button>
+
+    <table class="results-table" id="resultsTable">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Cédula</th>
+                <th>IP</th>
+                <th>Sector</th>
+                <th>Dirección</th>
+                <th>Teléfonos</th>
+                <th>Número de Caja</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="searchResults"></tbody>
+    </table>
+</div>
+
+<div id="tab2" class="tab-content">
+    <h2>Contenido de la Pestaña 2</h2>
+    <p>Este es el contenido de la segunda pestaña.</p>
+</div>
+
+<div id="tab3" class="tab-content">
+    <h2>Ingreso de Datos - Pestaña 3</h2>
+    <form id="dataForm">
+        <div class="form-group">
+            <label for="name">Nombre:</label>
+            <input type="text" id="name" required>
+        </div>
+        <div class="form-group">
+            <label for="cedula">Cédula:</label>
+            <input type="text" id="cedula" required>
+        </div>
+        <div class="form-group">
+            <label for="ip">IP del Cliente:</label>
+            <input type="text" id="ip" required>
+        </div>
+        <div class="form-group">
+            <label for="sector">Sector:</label>
+            <input type="text" id="sector" required>
+        </div>
+        <div class="form-group">
+            <label for="direccion">Dirección:</label>
+            <input type="text" id="direccion" required>
+        </div>
+        <div class="form-group">
+            <label for="telefonos">Teléfonos:</label>
+            <input type="text" id="telefonos" required>
+        </div>
+        <div class="form-group">
+            <label for="numeroCaja">Número de Caja:</label>
+            <input type="text" id="numeroCaja" required>
+        </div>
+        <button type="button" onclick="saveData()">Guardar</button>
+    </form>
+</div>
+
+<script>
+    const dataEntries = [];
+
+    function showTab(tabId) {
+        const tabs = document.querySelectorAll('.tab-content');
+        tabs.forEach(tab => {
+            tab.classList.remove('active');
+        });
+
+        const tabElements = document.querySelectorAll('.tab');
+        tabElements.forEach(tab => {
+            tab.classList.remove('active');
+        });
+
+        document.getElementById(tabId).classList.add('active');
+        document.querySelector(`.tab[onclick="showTab('${tabId}')"]`).classList.add('active');
+    }
+
+    function filterContent() {
+        const input = document.getElementById('filterInput');
+        const filter = input.value.toLowerCase();
+        const resultsContainer = document.getElementById('searchResults');
+        resultsContainer.innerHTML = ''; // Limpiar resultados anteriores
+
+        const filteredEntries = dataEntries.filter(entry => 
+            entry.name.toLowerCase().includes(filter) ||
+            entry.cedula.includes(filter) ||
+            entry.ip.includes(filter) ||
+            entry.sector.toLowerCase().includes(filter) ||
+            entry.direccion.toLowerCase().includes(filter) ||
+            entry.telefonos.includes(filter) ||
+            entry.numeroCaja.includes(filter)
+        );
+
+        if (filteredEntries.length > 0) {
+            filteredEntries.forEach(entry => {
+                resultsContainer.innerHTML += `
+                    <tr>
+                        <td>${entry.name}</td>
+                        <td>${entry.cedula}</td>
+                        <td>${entry.ip}</td>
+                        <td>${entry.sector}</td>
+                        <td>${entry.direccion}</td>
+                        <td>${entry.telefonos}</td>
+                        <td>${entry.numeroCaja}</td>
+                        <td><button onclick="goToNewForm('${entry.name}', '${entry.cedula}', '${entry.ip}')">Ir a Nuevo Formulario</button></td>
+                    </tr>`;
+            });
+        } else {
+            resultsContainer.innerHTML = '<tr><td colspan="8">No se encontraron resultados.</td></tr>';
+        }
+    }
+
+    function searchContent() {
+        const input = document.getElementById('filterInput');
+        alert(`Buscando: ${input.value}`);
+    }
+
+    function saveData() {
+        const name = document.getElementById('name').value;
+        const cedula = document.getElementById('cedula').value;
+        const ip = document.getElementById('ip').value;
+        const sector = document.getElementById('sector').value;
+        const direccion = document.getElementById('direccion').value;
+        const telefonos = document.getElementById('telefonos').value;
+        const numeroCaja = document.getElementById('numeroCaja').value;
+
+        // Guardar datos en el array
+        dataEntries.push({ name, cedula, ip, sector, direccion, telefonos, numeroCaja });
+        
+        alert(`Datos guardados:\nNombre: ${name}\nCédula: ${cedula}\nIP: ${ip}\nSector: ${sector}\nDirección: ${direccion}\nTeléfonos: ${telefonos}\nNúmero de Caja: ${numeroCaja}`);
+        
+        // Reiniciar el formulario
+        document.getElementById('dataForm').reset();
+    }
+
+    function goToNewForm(name, cedula, ip) {
+        const queryParams = new URLSearchParams({
+            nombre: name,
+            cedula: cedula,
+            ip: ip
+        }).toString();
+        window.location.href = 'nuevo_formulario1.html?' + queryParams; // Redirigir con parámetros
+    }
+</script>
+
+</body>
+</html>
