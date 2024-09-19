@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pestañas con Formulario de Ingreso</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Enlace al archivo CSS -->
+</head>
+<body>
+
+<h1>Pestañas de Ejemplo</h1>
+
+<div class="tabs">
+    <div class="tab active" onclick="showTab('tab1')">Pestaña 1</div>
+    <div class="tab" onclick="showTab('tab2')">Pestaña 2</div>
+    <div class="tab" onclick="showTab('tab3')">Pestaña 3</div>
+</div>
+
+<div id="tab1" class="tab-content active">
+    <h2>Contenido de la Pestaña 1</h2>
+    
+    <label for="filterInput">Filtrar contenido:</label>
+    <input type="text" id="filterInput" placeholder="Escribe para filtrar..." oninput="filterContent()">
+    
+    <button onclick="searchContent()">Buscar</button>
+
+    <table class="results-table" id="resultsTable">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Cédula</th>
+                <th>IP</th>
+                <th>Sector</th>
+                <th>Dirección</th>
+                <th>Teléfonos</th>
+                <th>Número de Caja</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="searchResults"></tbody>
+    </table>
+</div>
+
+<div id="tab2" class="tab-content">
+    <h2>Contenido de la Pestaña 2</h2>
+    <p>Este es el contenido de la segunda pestaña.</p>
+</div>
+
+<div id="tab3" class="tab-content">
+    <h2>Ingreso de Datos - Pestaña 3</h2>
+    <form id="dataForm">
+        <div class="form-group">
+            <label for="name">Nombre:</label>
+            <input type="text" id="name" required>
+        </div>
+        <div class="form-group">
+            <label for="cedula">Cédula:</label>
+            <input type="text" id="cedula" required>
+        </div>
+        <div class="form-group">
+            <label for="ip">IP del Cliente:</label>
+            <input type="text" id="ip" required>
+        </div>
+        <div class="form-group">
+            <label for="sector">Sector:</label>
+            <input type="text" id="sector" required>
+        </div>
+        <div class="form-group">
+            <label for="direccion">Dirección:</label>
+            <input type="text" id="direccion" required>
+        </div>
+        <div class="form-group">
+            <label for="telefonos">Teléfonos:</label>
+            <input type="text" id="telefonos" required>
+        </div>
+        <div class="form-group">
+            <label for="numeroCaja">Número de Caja:</label>
+            <input type="text" id="numeroCaja" required>
+        </div>
+        <button type="button" onclick="saveData()">Guardar</button>
+    </form>
+</div>
+
+<script>
+    // Aquí va tu código JavaScript
+</script>
+
+</body>
+</html>
